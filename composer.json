@@ -1,0 +1,30 @@
+{
+    "name": "su-aea-tss/jira-client",
+    "description": "description",
+    "minimum-stability": "stable",
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "mproy",
+            "email": "mproy@syr.edu"
+        }
+    ],
+    "require": {
+
+    },
+    "autoload": {
+        "psr-4": {
+            "SUTSS\\JiraClient\\": "src"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "SUTSS\\JiraClient\\JiraClientServiceProvider"
+            ],
+            "aliases": {
+                "imodulesclient": "SUTSS\\JiraClient\\Facades\\JiraClient"
+            }
+        }
+    }
+}
