@@ -487,6 +487,12 @@ class Issue extends AbstractRequest
         return $result;
     }
 
+    /**
+     * @param $issue
+     * @param null $transitionId
+     * @param false $expandFields
+     * @return array
+     */
     public function getTransitions($issue, $transitionId = null, $expandFields = false)
     {
         $params = array();

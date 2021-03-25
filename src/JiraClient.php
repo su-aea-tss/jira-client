@@ -4,6 +4,7 @@ namespace SUTSS\JiraClient;
 
 use SUTSS\JiraClient\HttpClient\GuzzleClient;
 use SUTSS\JiraClient\Request\Issue;
+use SUTSS\JiraClient\Resource\Field;
 
 /**
  * Description of JiraClient
@@ -32,7 +33,7 @@ class JiraClient
 
     public function __construct()
     {
-        $this->endpoint = 'https://ot.syr.edu' . self::ENDPOINT_PATH;
+        $this->endpoint = 'https://'. env('JIRA_INSTANCE') . self::ENDPOINT_PATH;
         $this->credential = new Credential(env('JIRA_LOGIN'), env('JIRA_PASSWORD'));
         $this->httpClient = new HttpClient\GuzzleClient();
     }
@@ -45,13 +46,38 @@ class JiraClient
      */
     public function getIssue($issue, $expandFields = false)
     {
-        $params = array();
-        if ($expandFields) {
-            $params['expand'] = '';
-        }
+        return $this->issue()->get($issue);
+    }
 
-        $path = "/issue/$issue" . http_build_query($params);
-        return $this->callGet($path)->getData();
+    /**
+     *
+     */
+    public function createIssue($summary,$description,$reporter = null)
+    {
+        return $this->issue()
+            ->create(env('JIRA_PROJECT'), 'Task')
+            ->field(Field::SUMMARY, $summary)
+            ->field(Field::DESCRIPTION, $description)
+//            ->field(Field::COMPONENT, 'Redirect Request') // Can't set this on dev for some reason
+            ->field(Field::REPORTER, ($reporter) ? $reporter : env('JIRA_LOGIN'))
+            ->execute();
+    }
+
+    /**
+     *
+     */
+    public function getTransitions($key)
+    {
+        return $this->issue()->getTransitions($key);
+    }
+
+    /**
+     *
+     */
+    public function closeIssue($key)
+    {
+        $issue = $this->issue()->get($key);
+        return $issue->transition()->execute(2);
     }
 
     /**

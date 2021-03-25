@@ -28,7 +28,7 @@ class Field
     const VERSION = 'version';
     const PRIORITY = 'priority';
     const DUE_DATE = 'duedate';
-    const ASSIGNEE = 'assigne';
+    const ASSIGNEE = 'assignee';
     const DESCRIPTION = 'description';
     const REPORTER = 'reporter';
     const CUSTOM_PREFIX = 'customfield_';
